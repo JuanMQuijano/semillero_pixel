@@ -1,6 +1,7 @@
 import { request, response } from "express";
 import bcrypt from "bcrypt"
 import User from "../Models/User.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const createUser = async (req = request, res = response) => {
     const { name, email, password } = req.body;
@@ -10,6 +11,8 @@ export const createUser = async (req = request, res = response) => {
     try {
         user.password = bcrypt.hashSync(user.password, 10)
         const newUser = await user.save();
+
+        await sendEmail(email, name, newUser.token, 'Cuenta Creada', 'Cuenta Creada')
 
         return res.status(201).json({
             ok: true,
