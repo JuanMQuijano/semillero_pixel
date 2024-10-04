@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import express from "express"
 import dbConnect from "./config/dbConnect.js";
 import router from "./Routes/userRoutes.js";
+import authRouter from "./Routes/authRoutes.js";
 dotenv.config()
 
 await dbConnect()
@@ -12,6 +13,7 @@ const server = express();
 server.use(express.json())
 
 server.use("/api/v1/users", router)
+server.use("/api/v1/auth", authRouter)
 
 server.listen(PORT, () => {
     console.log(`Funcionando en el puerto ${PORT}`)
